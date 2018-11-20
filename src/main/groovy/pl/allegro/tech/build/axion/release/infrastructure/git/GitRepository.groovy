@@ -9,6 +9,7 @@ import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevSort
 import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.transport.*
+import pl.allegro.tech.build.axion.release.domain.VersionConfig
 import pl.allegro.tech.build.axion.release.domain.logging.ReleaseLogger
 import pl.allegro.tech.build.axion.release.domain.scm.*
 
@@ -65,15 +66,27 @@ class GitRepository implements ScmRepository {
 
     @Override
     void tag(String tagName) {
+        tag(tagName, null)
+    }
+    
+    @Override
+    void tag(String tagName, VersionConfig versionConfig) {
         String headId = head().name()
 
         boolean isOnExistingTag = jgitRepository.tagList().call().any({
             it -> it.name == GIT_TAG_PREFIX + tagName && jgitRepository.repository.peel(it).peeledObjectId.name == headId
         })
         if (!isOnExistingTag) {
-            jgitRepository.tag()
-                .setName(tagName)
-                .call()
+            TagCommand tagCommand = jgitRepository.tag()
+                .setName(tagName);
+
+            if (versionConfig != null && versionConfig.createAnnotatedTag) {
+                String message = versionConfig.releaseCommitMessage.call();
+                tagCommand.setMessage(message);
+                tagCommand.setAnnotated(true);
+            }
+
+            tagCommand.call();
         } else {
             logger.debug("The head commit $headId already has the tag $tagName.")
         }

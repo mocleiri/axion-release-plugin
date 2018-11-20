@@ -1,6 +1,7 @@
 package pl.allegro.tech.build.axion.release.domain.scm
 
 import pl.allegro.tech.build.axion.release.domain.LocalOnlyResolver
+import pl.allegro.tech.build.axion.release.domain.VersionConfig
 import pl.allegro.tech.build.axion.release.domain.logging.ReleaseLogger
 
 class ScmService {
@@ -20,7 +21,10 @@ class ScmService {
     }
 
     void tag(String tagName) {
-        repository.tag(tagName)
+        tag(tagName, null)
+    }
+    void tag(String tagName, VersionConfig versionConfig) {
+        repository.tag(tagName, versionConfig)
     }
 
     void dropTag(String tagName) {

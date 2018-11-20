@@ -1,5 +1,7 @@
 package pl.allegro.tech.build.axion.release.domain.scm
 
+import pl.allegro.tech.build.axion.release.domain.VersionConfig
+
 import java.util.regex.Pattern
 
 interface ScmRepository {
@@ -7,6 +9,8 @@ interface ScmRepository {
     void fetchTags(ScmIdentity identity, String remoteName)
 
     void tag(String tagName)
+
+    void tag(String tagName, VersionConfig versionConfig)
 
     void dropTag(String tagName)
 

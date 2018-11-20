@@ -43,6 +43,8 @@ class VersionConfig {
 
     boolean createReleaseCommit = false
 
+    boolean createAnnotatedTag = false;
+
     Closure releaseCommitMessage = PredefinedReleaseCommitMessageCreator.DEFAULT.commitMessageCreator
 
     NextVersionConfig nextVersion = new NextVersionConfig()

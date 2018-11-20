@@ -1,5 +1,6 @@
 package pl.allegro.tech.build.axion.release.infrastructure
 
+import pl.allegro.tech.build.axion.release.domain.VersionConfig
 import pl.allegro.tech.build.axion.release.domain.logging.ReleaseLogger
 import pl.allegro.tech.build.axion.release.domain.scm.ScmIdentity
 import pl.allegro.tech.build.axion.release.domain.scm.ScmPosition
@@ -27,7 +28,11 @@ class DummyRepository implements ScmRepository {
     }
 
     @Override
-    void tag(String tagName) {
+    void tag (String tagName) {
+        log('create tag')
+    }
+    @Override
+    void tag(String tagName, VersionConfig versionConfig) {
         log('create tag')
     }
 

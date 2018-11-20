@@ -1,5 +1,6 @@
 package pl.allegro.tech.build.axion.release.infrastructure
 
+import pl.allegro.tech.build.axion.release.domain.VersionConfig
 import pl.allegro.tech.build.axion.release.domain.logging.ReleaseLogger
 import pl.allegro.tech.build.axion.release.domain.scm.ScmIdentity
 import pl.allegro.tech.build.axion.release.domain.scm.ScmPosition
@@ -28,6 +29,11 @@ class DryRepository implements ScmRepository {
 
     @Override
     void tag(String tagName) {
+        log("creating tag with name: $tagName")
+    }
+
+    @Override
+    void tag(String tagName, VersionConfig versionConfig) {
         log("creating tag with name: $tagName")
     }
 

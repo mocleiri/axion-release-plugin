@@ -24,6 +24,10 @@ class Releaser {
     }
 
     Optional<String> release(Properties rules) {
+        return release(rules, null)
+    }
+
+    Optional<String> release(Properties rules, VersionConfig versionConfig) {
         VersionContext versionContext = versionService.currentVersion(rules.version, rules.tag, rules.nextVersion)
         Version version = versionContext.version
 
@@ -33,7 +37,7 @@ class Releaser {
             hooksRunner.runPreReleaseHooks(rules.hooks, rules, versionContext, version)
 
             logger.quiet("Creating tag: $tagName")
-            repository.tag(tagName)
+            repository.tag(tagName, versionConfig)
 
             hooksRunner.runPostReleaseHooks(rules.hooks, rules, versionContext, version)
             return Optional.of(tagName)
@@ -44,7 +48,11 @@ class Releaser {
     }
 
     ScmPushResult releaseAndPush(Properties rules) {
-        Optional<String> releasedTagName = release(rules)
+        return release(rules, null)
+    }
+
+    ScmPushResult releaseAndPush(Properties rules, VersionConfig versionConfig) {
+        Optional<String> releasedTagName = release(rules, versionConfig)
 
         ScmPushResult result = pushRelease()
 
